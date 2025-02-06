@@ -1,0 +1,10 @@
+{
+	"name": "AzureDataLakeStorage_LS2",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://dadabi2025stg.dfs.core.windows.net/"
+		}
+	}
+}
