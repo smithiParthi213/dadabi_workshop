@@ -93,8 +93,6 @@
 			{
 				"name": "tsv_2_parquet",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "00:30:00",
@@ -145,7 +143,13 @@
 				"outputs": [
 					{
 						"referenceName": "Parquet1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@variables('myFileName')",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
