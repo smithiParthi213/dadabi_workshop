@@ -24,9 +24,25 @@
 				"typeProperties": {
 					"source": {
 						"type": "ParquetSource",
+						"additionalColumns": [
+							{
+								"name": "ID_JOB_ID",
+								"value": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "ID_LOAD_DATE",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": false,
+							"recursive": true,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -35,6 +51,10 @@
 					},
 					"sink": {
 						"type": "SnowflakeV2Sink",
+						"preCopyScript": {
+							"value": "TRUNCATE TABLE STG.PET_LICENSE_STAGE",
+							"type": "Expression"
+						},
 						"importSettings": {
 							"type": "SnowflakeImportCopyCommand"
 						}
@@ -42,7 +62,7 @@
 					"enableStaging": true,
 					"stagingSettings": {
 						"linkedServiceName": {
-							"referenceName": "AzureBlobStorage_LS",
+							"referenceName": "AzureBlobStorage002_LS",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -73,6 +93,8 @@
 			{
 				"name": "tsv_2_parquet",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "00:30:00",
@@ -123,13 +145,7 @@
 				"outputs": [
 					{
 						"referenceName": "Parquet1",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": {
-								"value": "@variables('myFileName')",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					}
 				]
 			}
