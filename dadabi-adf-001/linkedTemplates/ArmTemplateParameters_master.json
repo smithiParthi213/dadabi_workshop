@@ -8,15 +8,6 @@
 		"Snowflake_LS_password": {
 			"value": ""
 		},
-		"AzureBlobStorage01_LS_sasUri": {
-			"value": ""
-		},
-		"AzureBlobStorage_LS_sasUri": {
-			"value": ""
-		},
-		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
-			"value": "https://dadabi25.dfs.core.windows.net/"
-		},
 		"AzureDataLakeStorage_LS2_properties_typeProperties_url": {
 			"value": "https://dadabi2025stg.dfs.core.windows.net/"
 		},

@@ -11,18 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_LS'"
 		},
-		"AzureBlobStorage01_LS_sasUri": {
-			"type": "secureString",
-			"metadata": "Secure string for 'sasUri' of 'AzureBlobStorage01_LS'"
-		},
-		"AzureBlobStorage_LS_sasUri": {
-			"type": "secureString",
-			"metadata": "Secure string for 'sasUri' of 'AzureBlobStorage_LS'"
-		},
-		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://dadabi25.dfs.core.windows.net/"
-		},
 		"AzureDataLakeStorage_LS2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dadabi2025stg.dfs.core.windows.net/"
@@ -72,15 +60,6 @@
 					},
 					"Snowflake_LS_password": {
 						"value": "[parameters('Snowflake_LS_password')]"
-					},
-					"AzureBlobStorage01_LS_sasUri": {
-						"value": "[parameters('AzureBlobStorage01_LS_sasUri')]"
-					},
-					"AzureBlobStorage_LS_sasUri": {
-						"value": "[parameters('AzureBlobStorage_LS_sasUri')]"
-					},
-					"AzureDataLakeStorage_LS_properties_typeProperties_url": {
-						"value": "[parameters('AzureDataLakeStorage_LS_properties_typeProperties_url')]"
 					},
 					"AzureDataLakeStorage_LS2_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_LS2_properties_typeProperties_url')]"
