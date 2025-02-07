@@ -1,5 +1,5 @@
 {
-	"name": "PL_TSV_2_Parquet",
+	"name": "PL_SNF_STG",
 	"properties": {
 		"activities": [
 			{
