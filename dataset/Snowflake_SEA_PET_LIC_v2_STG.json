@@ -1,0 +1,65 @@
+{
+	"name": "Snowflake_SEA_PET_LIC_v2_STG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_LS",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Schema": {
+				"type": "string",
+				"defaultValue": "STG"
+			},
+			"TableName": {
+				"type": "string",
+				"defaultValue": "PET_LICENSE_v2_STG"
+			}
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "LICENSE_ISSUE_DATE",
+				"type": "DATE"
+			},
+			{
+				"name": "LICENSE_NUMBER",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "ANIMAL_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "SPECIES",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PRIMARY_BREED",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "SECONDARY_BREED",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "ZIP_CODE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_JOB_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_LOAD_DT",
+				"type": "DATE"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "PET_LICENSE_V2_STG"
+		}
+	}
+}
