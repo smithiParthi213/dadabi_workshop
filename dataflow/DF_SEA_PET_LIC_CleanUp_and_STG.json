@@ -1,5 +1,5 @@
 {
-	"name": "DF_SEA_PET_LIC_CleanUp",
+	"name": "DF_SEA_PET_LIC_CleanUp_and_STG",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
