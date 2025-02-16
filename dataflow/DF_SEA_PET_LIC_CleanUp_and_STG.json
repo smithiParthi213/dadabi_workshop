@@ -15,18 +15,17 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Snowflake_SEA_PET_LIC_v2_STG",
-						"type": "DatasetReference"
-					},
-					"name": "SinkSnfSeaPetLicSTG",
-					"description": "Add sink dataset - Seattle Pet Lic STG tbl"
-				},
-				{
-					"dataset": {
 						"referenceName": "Parquet2",
 						"type": "DatasetReference"
 					},
 					"name": "sinkAdlsSilver"
+				},
+				{
+					"dataset": {
+						"referenceName": "Snowflake_SEA_PET_LIC_v2_STG",
+						"type": "DatasetReference"
+					},
+					"name": "SinkSnfStgTbl"
 				}
 			],
 			"transformations": [
@@ -77,30 +76,29 @@
 				"     skipDuplicateMapOutputs: false) ~> PickedRequiredCols",
 				"PickedRequiredCols sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: []) ~> sinkAdlsSilver",
+				"PickedRequiredCols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     truncate:true,",
 				"     format: 'table',",
 				"     stageInsert: true,",
 				"     mapColumn(",
-				"          License_Issue_Date,",
-				"          License_Number,",
-				"          Animal_Name,",
-				"          Species,",
-				"          Primary_Breed,",
-				"          Secondary_Breed,",
-				"          Zip_Code,",
-				"          DI_Job_ID,",
-				"          DI_LOAD_DT",
-				"     )) ~> SinkSnfSeaPetLicSTG",
-				"PickedRequiredCols sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     format: 'parquet',",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: []) ~> sinkAdlsSilver"
+				"          license_issue_date = License_Issue_Date,",
+				"          license_number = License_Number,",
+				"          animal_name = Animal_Name,",
+				"          species = Species,",
+				"          primary_breed = Primary_Breed,",
+				"          secondary_breed = Secondary_Breed,",
+				"          zip_code = Zip_Code,",
+				"          di_job_id = DI_Job_ID,",
+				"          di_load_dt = DI_LOAD_DT",
+				"     )) ~> SinkSnfStgTbl"
 			]
 		}
 	}
