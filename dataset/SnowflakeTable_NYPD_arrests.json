@@ -1,15 +1,15 @@
 {
-	"name": "snf_ds",
+	"name": "SnowflakeTable_NYPD_arrests",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_LS",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"schema": {
+			"Schema": {
 				"type": "string"
 			},
-			"tablename": {
+			"Table": {
 				"type": "string"
 			}
 		},
@@ -18,7 +18,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "STG",
-			"table": "PET_LICENSE_STAGE"
+			"table": "ARRESTS"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

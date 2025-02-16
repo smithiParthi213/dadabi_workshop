@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText_petLic_ds",
+	"name": "DelimitedText_NYPDcsv_sink",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage_LS2",
@@ -10,10 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "seattle_pet_lic_ds.tsv",
-				"fileSystem": "bronze"
+				"folderPath": "NYPD_Arrests",
+				"fileSystem": "silver"
 			},
-			"columnDelimiter": "\t",
+			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
