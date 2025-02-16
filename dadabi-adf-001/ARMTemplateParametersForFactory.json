@@ -8,6 +8,9 @@
 		"Snowflake_LS_password": {
 			"value": ""
 		},
+		"AzureBlobStorage002_LS_sasUri": {
+			"value": ""
+		},
 		"AzureDataLakeStorage_LS2_properties_typeProperties_url": {
 			"value": "https://dadabi2025stg.dfs.core.windows.net/"
 		},
@@ -19,9 +22,6 @@
 		},
 		"Snowflake_LS_properties_typeProperties_role": {
 			"value": "DEV_USER"
-		},
-		"AzureBlobStorage002_LS_sasUri": {
-			"value": ""
 		}
 	}
 }
