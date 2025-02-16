@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "snf_ds",
+						"referenceName": "Snowflake_SEA_PET_LIC_v2_STG",
 						"type": "DatasetReference"
 					},
 					"name": "SinkSnfSeaPetLicSTG",
@@ -89,7 +89,7 @@
 				"          License_Number,",
 				"          Animal_Name,",
 				"          Species,",
-				"          {Primary Breed} = Primary_Breed,",
+				"          Primary_Breed,",
 				"          Secondary_Breed,",
 				"          Zip_Code,",
 				"          DI_Job_ID,",

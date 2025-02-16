@@ -1,0 +1,16 @@
+{
+	"name": "Snowflake_SEA_PET_LIC_v2_STG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "PET_LICENSE_V2_STG"
+		}
+	}
+}
