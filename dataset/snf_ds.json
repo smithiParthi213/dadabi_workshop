@@ -7,10 +7,12 @@
 		},
 		"parameters": {
 			"schema": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "STG"
 			},
 			"tablename": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "PET_LICENSE_STAGE"
 			}
 		},
 		"annotations": [],
