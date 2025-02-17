@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "RAW_DS_CleanUp",
+				"name": "RAW_DS_CleanUp_and_STG",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,18 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DF_SEA_PET_LIC_CleanUp",
+						"referenceName": "DF_SEA_PET_LIC_CleanUp_and_STG",
 						"type": "DataFlowReference",
 						"parameters": {
 							"Job_ID": {
 								"value": "'@{pipeline().RunId}'",
 								"type": "Expression"
-							}
-						},
-						"datasetParameters": {
-							"SinkSnfSeaPetLicSTG": {
-								"schema": "STG",
-								"tablename": "PET_LICENSE_STAGE"
 							}
 						}
 					},
