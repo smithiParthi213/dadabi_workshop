@@ -1,0 +1,16 @@
+{
+	"name": "Snowflake_BreedDim_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SEATTLE_PET_LIC",
+			"table": "BREED_DIM"
+		}
+	}
+}
