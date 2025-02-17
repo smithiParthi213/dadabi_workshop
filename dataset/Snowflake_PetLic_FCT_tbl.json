@@ -1,0 +1,16 @@
+{
+	"name": "Snowflake_PetLic_FCT_tbl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SEATTLE_PET_LIC",
+			"table": "PET_LIC_FCT"
+		}
+	}
+}
