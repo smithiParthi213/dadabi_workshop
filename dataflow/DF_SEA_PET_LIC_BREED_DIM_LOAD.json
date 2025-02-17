@@ -32,7 +32,7 @@
 						"referenceName": "Snowflake_BreedDim_table",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "SinkSnfBreedDimTbl"
 				}
 			],
 			"transformations": [
@@ -154,7 +154,7 @@
 				"          SECONDARY_BREED_NAME = SECONDARY_BREED,",
 				"          DI_JOB_ID,",
 				"          DI_LOAD_DT",
-				"     )) ~> sink1"
+				"     )) ~> SinkSnfBreedDimTbl"
 			]
 		}
 	}
