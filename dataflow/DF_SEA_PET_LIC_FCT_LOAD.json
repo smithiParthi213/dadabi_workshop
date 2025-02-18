@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "DF_SEA_PET_LIC_FCT_LOAD",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -54,22 +54,22 @@
 					"name": "joinLocationDim"
 				},
 				{
-					"name": "join1BreedDim"
+					"name": "joinBreedDim"
 				},
 				{
 					"name": "joinDateDim"
 				},
 				{
-					"name": "surrogateKey1"
+					"name": "surrogateKeyPetLicSK"
 				},
 				{
-					"name": "select1"
+					"name": "selectReqCols"
 				},
 				{
 					"name": "joinFactMaxID"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "derivedColumns"
 				}
 			],
 			"scriptLines": [
@@ -152,15 +152,15 @@
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1BreedDim",
-				"join1BreedDim, SourceDateDim join(LICENSE_ISSUE_DATE == DT,",
+				"     broadcast: 'auto')~> joinBreedDim",
+				"joinBreedDim, SourceDateDim join(LICENSE_ISSUE_DATE == DT,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> joinDateDim",
-				"select1 keyGenerate(output(PetLic_SK as long),",
+				"selectReqCols keyGenerate(output(PetLic_SK as long),",
 				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
+				"     stepValue: 1L) ~> surrogateKeyPetLicSK",
 				"joinFactMaxID select(mapColumn(",
 				"          LICENSE_NUMBER,",
 				"          LOCATION_SK,",
@@ -169,22 +169,21 @@
 				"          PET_LIC_SK_MAX",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> select1",
+				"     skipDuplicateMapOutputs: false) ~> selectReqCols",
 				"joinDateDim, FctMaxID join(1==1,",
 				"     joinType:'cross',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> joinFactMaxID",
-				"surrogateKey1 derive(PetLic_SK = PetLic_SK + PET_LIC_SK_MAX,",
+				"surrogateKeyPetLicSK derive(PetLic_SK = PetLic_SK + PET_LIC_SK_MAX,",
 				"          DI_JOB_ID = $job_id,",
-				"          DI_LOAD_DT = currentDate()) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"          DI_LOAD_DT = currentDate()) ~> derivedColumns",
+				"derivedColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     truncate:true,",
 				"     format: 'table',",
 				"     stageInsert: true,",
 				"     mapColumn(",
