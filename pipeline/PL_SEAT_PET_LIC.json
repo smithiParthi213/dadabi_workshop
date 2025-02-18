@@ -5,8 +5,6 @@
 			{
 				"name": "RAW_DS_CleanUp_and_STG",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -37,8 +35,6 @@
 			{
 				"name": "Breed_Dim_Load",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "RAW_DS_CleanUp_and_STG",
@@ -76,8 +72,6 @@
 			{
 				"name": "Location_Dim_Load",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Breed_Dim_Load",
@@ -133,7 +127,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "DF_SEA_PET_LIC_FCT_LOAD",
 						"type": "DataFlowReference",
 						"parameters": {
 							"job_id": {
