@@ -1,0 +1,16 @@
+{
+	"name": "Snowflake_NameBasicsTbl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "WORKSHOP_7",
+			"table": "NAME_BASICS_FLATTEN"
+		}
+	}
+}
