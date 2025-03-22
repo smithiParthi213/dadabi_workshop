@@ -1,0 +1,98 @@
+{
+	"name": "DF_LAD_Customer_SNF_LOAD",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Parquet_LAD_Customer_part1",
+						"type": "DatasetReference"
+					},
+					"name": "sourceLADCustomerSNF"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Customer_DIM",
+						"type": "DatasetReference"
+					},
+					"name": "sourceLADCustomerMaxID"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Customer_DIM",
+						"type": "DatasetReference"
+					},
+					"name": "sinkSNF"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SK"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "join1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     job_id as string (\"SP_001\")",
+				"}",
+				"source(output(",
+				"          customerid as integer,",
+				"          CustomerName as string,",
+				"          billTo as string,",
+				"          INFERRED_STATUS as integer,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DT as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> sourceLADCustomerSNF",
+				"source(output(",
+				"          MAX_CUSTOMER_SK as decimal(38,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'select NVL(MAX(CUSTOMER_SK),0) as MAX_CUSTOMER_SK from LAD_ASSIGN.CUSTOMER_DIM',",
+				"     format: 'query') ~> sourceLADCustomerMaxID",
+				"join1 keyGenerate(output(my_SK as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> SK",
+				"SK derive(CUSTOMER_SK = my_SK + MAX_CUSTOMER_SK,",
+				"          DI_JOB_ID = $job_id,",
+				"          DI_LOAD_DT = currentDate()) ~> derivedColumn1",
+				"sourceLADCustomerSNF, sourceLADCustomerMaxID join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CUSTOMER_SK,",
+				"          CUSTOMER_ID = customerid,",
+				"          CUSTOMER_NAME = CustomerName,",
+				"          BILL_TO = billTo,",
+				"          INFERRED_STATUS,",
+				"          DI_JOB_ID,",
+				"          DI_LOAD_DT",
+				"     )) ~> sinkSNF"
+			]
+		}
+	}
+}
