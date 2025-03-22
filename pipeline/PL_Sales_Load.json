@@ -1,9 +1,9 @@
 {
-	"name": "PL_Customer_Load",
+	"name": "PL_Sales_Load",
 	"properties": {
 		"activities": [
 			{
-				"name": "CustomerData_LOAD",
+				"name": "Invoice_LOAD",
 				"type": "Copy",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
@@ -20,13 +20,6 @@
 					"source": {
 						"type": "DelimitedTextSource",
 						"additionalColumns": [
-							{
-								"name": "INFERRED_STATUS",
-								"value": {
-									"value": "0",
-									"type": "Expression"
-								}
-							},
 							{
 								"name": "DI_JOB_ID",
 								"value": {
@@ -72,6 +65,18 @@
 						"mappings": [
 							{
 								"source": {
+									"name": "invoiceId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "invoiceId",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
 									"name": "customerid",
 									"type": "String",
 									"physicalType": "String"
@@ -84,35 +89,96 @@
 							},
 							{
 								"source": {
-									"name": "CustomerName",
+									"name": "invoiceDate",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CustomerName",
+									"name": "invoiceDate",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
-									"name": "billTo",
+									"name": "ShipTo",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "billTo",
+									"name": "ShipTo",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
 							},
 							{
 								"source": {
-									"name": "INFERRED_STATUS",
-									"type": "String"
+									"name": "ShipTo_City",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
-									"name": "INFERRED_STATUS",
+									"name": "ShipTo_City",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "ShipTo_Country",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ShipTo_Country",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "SalespersonPersonID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SalespersonPersonID",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "SalespersonName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SalespersonName",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "total_product_cnt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "total_product_cnt",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Total",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Total",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
@@ -149,23 +215,25 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText_LAD_Customer_part1",
+						"referenceName": "DelimitedText_LAD_Sales",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Parquet_LAD_Customer_part1",
+						"referenceName": "Parquet_LAD_Invoice",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "parquet_2_snf_LOAD",
+				"name": "parquet_2_snf",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "CustomerData_LOAD",
+						"activity": "Invoice_LOAD",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -181,12 +249,41 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DF_LAD_Customer_SNF_LOAD",
+						"referenceName": "DF_LAD_InvoiceFCT_SNF_LOAD",
 						"type": "DataFlowReference",
 						"parameters": {
 							"job_id": "\"SP_001\""
 						}
 					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Handle_Late_Arrival_Dims",
+				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [
+					{
+						"activity": "parquet_2_snf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
