@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Customer_Inferred_Late_LOAD",
+				"name": "Customer_Late_STG_LOAD",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -30,11 +30,11 @@
 				}
 			},
 			{
-				"name": "Customer_New_Late_LOAD",
+				"name": "Customer_Late_GOLD_LOAD",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Customer_Inferred_Late_LOAD",
+						"activity": "Customer_Late_STG_LOAD",
 						"dependencyConditions": [
 							"Succeeded"
 						]

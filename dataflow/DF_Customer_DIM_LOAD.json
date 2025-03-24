@@ -1,5 +1,5 @@
 {
-	"name": "DF_Customer_DIM_Initial_LOAD",
+	"name": "DF_Customer_DIM_LOAD",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

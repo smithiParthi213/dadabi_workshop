@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DF_Customer_DIM_Initial_LOAD",
+						"referenceName": "DF_Customer_DIM_LOAD",
 						"type": "DataFlowReference",
 						"parameters": {
 							"job_id": "\"SP_001_Gold_LOAD\""
