@@ -1,0 +1,16 @@
+{
+	"name": "SnowflakeTable_LAD_Invoice_STG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "INVOICE_FACT_STG"
+		}
+	}
+}

@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText_LAD_Sales",
+	"name": "DelimitedText_LAD_Invoice",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage_LS2",

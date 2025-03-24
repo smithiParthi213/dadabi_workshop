@@ -1,0 +1,92 @@
+{
+	"name": "DF_LAD_Invoice_STG_LOAD",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText_LAD_Invoice",
+						"type": "DatasetReference"
+					},
+					"name": "sourceInvoiceBronze"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Invoice_STG",
+						"type": "DatasetReference"
+					},
+					"name": "sinkInvoiceSTG"
+				},
+				{
+					"dataset": {
+						"referenceName": "Parquet_LAD_Invoice",
+						"type": "DatasetReference"
+					},
+					"name": "sinkParquetAdlsSilver"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AddingDIcols"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     job_id as string (\"SP_001_STG_LOAD\")",
+				"}",
+				"source(output(",
+				"          invoiceId as integer,",
+				"          customerid as short,",
+				"          invoiceDate as date,",
+				"          ShipTo as string,",
+				"          ShipTo_City as string,",
+				"          ShipTo_Country as string,",
+				"          SalespersonPersonID as short,",
+				"          SalespersonName as string,",
+				"          total_product_cnt as short,",
+				"          Total as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourceInvoiceBronze",
+				"sourceInvoiceBronze derive(DI_JOB_ID = $job_id,",
+				"          DI_LOAD_DT = currentDate()) ~> AddingDIcols",
+				"AddingDIcols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          INVOICE_ID = invoiceId,",
+				"          CUSTOMER_ID = customerid,",
+				"          INVOICE_DATE = invoiceDate,",
+				"          SHIP_TO = ShipTo,",
+				"          SHIP_TO_CITY = ShipTo_City,",
+				"          SHIP_TO_COUNTRY = ShipTo_Country,",
+				"          SALES_PERSON_ID = SalespersonPersonID,",
+				"          SALES_PERSON_NAME = SalespersonName,",
+				"          TOTAL_PRODUCT_CNT = total_product_cnt,",
+				"          TOTAL_COST = Total,",
+				"          DI_JOB_ID,",
+				"          DI_LOAD_DT",
+				"     )) ~> sinkInvoiceSTG",
+				"AddingDIcols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkParquetAdlsSilver"
+			]
+		}
+	}
+}
