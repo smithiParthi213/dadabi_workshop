@@ -1,5 +1,5 @@
 {
-	"name": "SnowflakeTable_LAD_Invoice",
+	"name": "SnowflakeTable_LAD_Invoice_FACT",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_LS",

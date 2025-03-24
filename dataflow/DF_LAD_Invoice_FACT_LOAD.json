@@ -13,7 +13,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_LAD_Invoice",
+						"referenceName": "SnowflakeTable_LAD_Invoice_FACT",
 						"type": "DatasetReference"
 					},
 					"name": "InvoiceMAXID"
@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_LAD_Invoice",
+						"referenceName": "SnowflakeTable_LAD_Invoice_FACT",
 						"type": "DatasetReference"
 					},
 					"name": "SinkInvoiceFact"
