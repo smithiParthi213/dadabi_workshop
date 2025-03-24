@@ -1,0 +1,129 @@
+{
+	"name": "DF_LAD_Invoice_FACT_LOAD",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Invoice_STG",
+						"type": "DatasetReference"
+					},
+					"name": "sourceInvoiceSTG"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Invoice",
+						"type": "DatasetReference"
+					},
+					"name": "InvoiceMAXID"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Invoice",
+						"type": "DatasetReference"
+					},
+					"name": "SinkInvoiceFact"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey"
+				},
+				{
+					"name": "JoinMaxID"
+				},
+				{
+					"name": "derivedColumns"
+				},
+				{
+					"name": "selectReqCols"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     job_id as string (\"SP_001_FACT_LOAD\")",
+				"}",
+				"source(output(",
+				"          INVOICE_ID as decimal(38,0),",
+				"          CUSTOMER_ID as decimal(38,0),",
+				"          INVOICE_DATE as date,",
+				"          SHIP_TO as string,",
+				"          SHIP_TO_CITY as string,",
+				"          SHIP_TO_COUNTRY as string,",
+				"          SALES_PERSON_ID as decimal(38,0),",
+				"          SALES_PERSON_NAME as string,",
+				"          TOTAL_PRODUCT_CNT as decimal(38,0),",
+				"          TOTAL_COST as double,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> sourceInvoiceSTG",
+				"source(output(",
+				"          MAX_INVOICE_SK as decimal(38,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'select NVL(MAX(INVOICE_SK),0) as Max_Invoice_SK from LAD_ASSIGN.INVOICE_FACT',",
+				"     format: 'query') ~> InvoiceMAXID",
+				"JoinMaxID keyGenerate(output(my_InvoiceSK as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey",
+				"sourceInvoiceSTG, InvoiceMAXID join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinMaxID",
+				"surrogateKey derive(INVOICE_SK = my_InvoiceSK + MAX_INVOICE_SK,",
+				"          di_job_id = $job_id,",
+				"          di_load_dt = currentDate()) ~> derivedColumns",
+				"derivedColumns select(mapColumn(",
+				"          INVOICE_SK,",
+				"          INVOICE_ID,",
+				"          CUSTOMER_ID,",
+				"          INVOICE_DATE,",
+				"          SHIP_TO,",
+				"          SHIP_TO_CITY,",
+				"          SHIP_TO_COUNTRY,",
+				"          SALES_PERSON_ID,",
+				"          SALES_PERSON_NAME,",
+				"          TOTAL_PRODUCT_CNT,",
+				"          TOTAL_COST,",
+				"          DI_JOB_ID = derivedColumns@di_job_id,",
+				"          DI_LOAD_DT = derivedColumns@di_load_dt",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectReqCols",
+				"selectReqCols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          INVOICE_SK,",
+				"          INVOICE_ID,",
+				"          CUSTOMER_ID,",
+				"          INVOICE_DATE,",
+				"          SHIP_TO,",
+				"          SHIP_TO_CITY,",
+				"          SHIP_TO_COUNTRY,",
+				"          SALES_PERSON_ID,",
+				"          SALES_PERSON_NAME,",
+				"          TOTAL_PRODUCT_CNT,",
+				"          TOTAL_COST,",
+				"          DI_JOB_ID,",
+				"          DI_LOAD_DT",
+				"     )) ~> SinkInvoiceFact"
+			]
+		}
+	}
+}
