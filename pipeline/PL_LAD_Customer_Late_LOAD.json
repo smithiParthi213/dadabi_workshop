@@ -30,7 +30,7 @@
 				}
 			},
 			{
-				"name": "Customer_Inferred_Late_GOLD_LOAD",
+				"name": "UPDATE_Customer_Late_GOLD_LOAD",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
@@ -64,13 +64,13 @@
 				}
 			},
 			{
-				"name": "Customer_New_Late_GOLD_LOAD",
+				"name": "INSERT_Customer_Late_GOLD_LOAD",
 				"type": "ExecuteDataFlow",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "Customer_Inferred_Late_GOLD_LOAD",
+						"activity": "UPDATE_Customer_Late_GOLD_LOAD",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -85,13 +85,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "DF_LAD_CustomerDIM_New_Late_LOAD",
-						"type": "DataFlowReference",
-						"parameters": {
-							"job_id": "\"SP_001_LateDIM_LOAD\""
-						}
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
