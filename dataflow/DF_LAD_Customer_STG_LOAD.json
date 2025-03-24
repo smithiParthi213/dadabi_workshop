@@ -9,7 +9,7 @@
 						"referenceName": "DelimitedText_LAD_Customer_part1",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "sourceCustomerBronze"
 				}
 			],
 			"sinks": [
@@ -44,8 +44,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 derive(DI_JOB_ID = $job_id,",
+				"     ignoreNoFilesFound: false) ~> sourceCustomerBronze",
+				"sourceCustomerBronze derive(DI_JOB_ID = $job_id,",
 				"          DI_LOAD_DT = currentDate()) ~> addingDIcols",
 				"addingDIcols sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -58,9 +58,9 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     stageInsert: true,",
 				"     mapColumn(",
-				"          customerid,",
-				"          CustomerName,",
-				"          billTo,",
+				"          CUSTOMER_ID = customerid,",
+				"          CUSTOMER_NAME = CustomerName,",
+				"          BILL_TO = billTo,",
 				"          DI_JOB_ID,",
 				"          DI_LOAD_DT",
 				"     )) ~> sinkCustomerSTG",
