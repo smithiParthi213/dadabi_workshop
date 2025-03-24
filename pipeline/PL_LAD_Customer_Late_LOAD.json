@@ -66,6 +66,8 @@
 			{
 				"name": "Customer_New_Late_GOLD_LOAD",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Customer_Inferred_Late_GOLD_LOAD",
