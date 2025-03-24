@@ -1,0 +1,85 @@
+{
+	"name": "DF_LAD_Customer_STG_LOAD_002",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText_LAD_Customer_part2",
+						"type": "DatasetReference"
+					},
+					"name": "sourceCustomerBronze"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Customer_STG",
+						"type": "DatasetReference"
+					},
+					"name": "sinkCustomerSTG"
+				},
+				{
+					"dataset": {
+						"referenceName": "Parquet_LAD_Customer_part2",
+						"type": "DatasetReference"
+					},
+					"name": "sinkParquetAdlsSilver"
+				}
+			],
+			"transformations": [
+				{
+					"name": "addingDIcols"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     job_id as string (\"SP_001_STG_LOAD\")",
+				"}",
+				"source(output(",
+				"          customerid as short,",
+				"          CustomerName as string,",
+				"          billTo as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourceCustomerBronze",
+				"sourceCustomerBronze derive(DI_JOB_ID = $job_id,",
+				"          DI_LOAD_DT = currentDate()) ~> addingDIcols",
+				"addingDIcols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CUSTOMER_ID = customerid,",
+				"          CUSTOMER_NAME = CustomerName,",
+				"          BILL_TO = billTo,",
+				"          DI_JOB_ID,",
+				"          DI_LOAD_DT",
+				"     )) ~> sinkCustomerSTG",
+				"addingDIcols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          customerid as short,",
+				"          CustomerName as string,",
+				"          billTo as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DT as date",
+				"     ),",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkParquetAdlsSilver"
+			]
+		}
+	}
+}
