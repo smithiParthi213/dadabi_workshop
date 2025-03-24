@@ -5,6 +5,8 @@
 			{
 				"name": "Invoice_FACT_LOAD",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -20,6 +22,40 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"job_id": "\"SP_001_FACT_LOAD\""
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Inferred_Records_LOAD",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Invoice_FACT_LOAD",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_Handle_InferredCols",
+						"type": "DataFlowReference",
+						"parameters": {
+							"job_id": "\"SP_001_InferredRecords_LOAD\""
 						}
 					},
 					"compute": {
