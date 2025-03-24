@@ -1,5 +1,5 @@
 {
-	"name": "DF_LAD_CustomerDIM_Inferred_Late_LOAD",
+	"name": "DF_LAD_CustomerDIM_New_Late_LOAD",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -29,9 +29,6 @@
 				}
 			],
 			"transformations": [
-				{
-					"name": "join"
-				},
 				{
 					"name": "FilterInferredCols"
 				},
@@ -68,12 +65,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> sourceCustomerDIM",
-				"sourceCustomerSTG, sourceCustomerDIM join(sourceCustomerSTG@CUSTOMER_ID == sourceCustomerDIM@CUSTOMER_ID,",
-				"     joinType:'left',",
-				"     matchType:'exact',",
-				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join",
-				"join filter(INFERRED_STATUS == 1) ~> FilterInferredCols",
+				"sourceCustomerSTG filter(INFERRED_STATUS == 0) ~> FilterInferredCols",
 				"FilterInferredCols derive(CUSTOMER_NAME = sourceCustomerSTG@CUSTOMER_NAME,",
 				"          BILL_TO = sourceCustomerSTG@BILL_TO,",
 				"          INFERRED_STATUS = 0,",
@@ -81,7 +73,7 @@
 				"          di_load_dt = currentDate()) ~> derivedColumns",
 				"derivedColumns select(mapColumn(",
 				"          CUSTOMER_SK,",
-				"          CUSTOMER_ID = sourceCustomerSTG@CUSTOMER_ID,",
+				"          CUSTOMER_ID,",
 				"          CUSTOMER_NAME,",
 				"          BILL_TO,",
 				"          INFERRED_STATUS,",

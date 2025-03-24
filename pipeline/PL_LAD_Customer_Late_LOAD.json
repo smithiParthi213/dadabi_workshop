@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DF_LAD_Customer_STG_LOAD_LATE",
+						"referenceName": "DF_LAD_Customer_STG_Late_LOAD",
 						"type": "DataFlowReference",
 						"parameters": {
 							"job_id": "\"SP_001_STG_LOAD\""
@@ -30,7 +30,7 @@
 				}
 			},
 			{
-				"name": "Customer_Late_GOLD_LOAD",
+				"name": "Customer_Inferred_Late_GOLD_LOAD",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
@@ -49,6 +49,47 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_LAD_CustomerDIM_Inferred_Late_LOAD",
+						"type": "DataFlowReference",
+						"parameters": {
+							"job_id": "\"SP_001_LateDIM_LOAD\""
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Customer_New_Late_GOLD_LOAD",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Customer_Inferred_Late_GOLD_LOAD",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_LAD_CustomerDIM_New_Late_LOAD",
+						"type": "DataFlowReference",
+						"parameters": {
+							"job_id": "\"SP_001_LateDIM_LOAD\""
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
