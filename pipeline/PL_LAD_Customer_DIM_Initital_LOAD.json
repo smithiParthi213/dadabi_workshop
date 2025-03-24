@@ -1,0 +1,35 @@
+{
+	"name": "PL_LAD_Customer_DIM_Initital_LOAD",
+	"properties": {
+		"activities": [
+			{
+				"name": "CustomerDIM_initial_LOAD",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_Customer_DIM_Initial_LOAD",
+						"type": "DataFlowReference",
+						"parameters": {
+							"job_id": "\"SP_001_Gold_LOAD\""
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
