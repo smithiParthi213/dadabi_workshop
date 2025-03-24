@@ -17,6 +17,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sourceCustomerDIM"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Customer_DIM",
+						"type": "DatasetReference"
+					},
+					"name": "customerDimMaxID"
 				}
 			],
 			"sinks": [
@@ -34,6 +41,12 @@
 				},
 				{
 					"name": "AlterRow1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn"
 				}
 			],
 			"scriptLines": [
@@ -59,15 +72,21 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> sourceCustomerDIM",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'select NVL(MAX(CUSTOMER_SK),0) as Max_customer_SK from LAD_ASSIGN.CUSTOMER_DIM',",
+				"     format: 'query') ~> customerDimMaxID",
 				"sourceCustomerSTG, sourceCustomerDIM join(sourceCustomerSTG@CUSTOMER_ID == sourceCustomerDIM@CUSTOMER_ID,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> join",
-				"join alterRow(insertIf(isNull(sourceCustomerDIM@CUSTOMER_ID)\r",
-				"),",
-				"     updateIf(INFERRED_STATUS == 1\r",
-				")) ~> AlterRow1",
+				"derivedColumn alterRow(insertIf(isNull(sourceCustomerDIM@CUSTOMER_ID)),",
+				"     updateIf(INFERRED_STATUS==1)) ~> AlterRow1",
+				"join keyGenerate(output(my_sk as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(new_SK = ERROR_FUNCTION('')) ~> derivedColumn",
 				"AlterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
