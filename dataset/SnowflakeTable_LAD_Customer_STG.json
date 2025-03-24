@@ -1,5 +1,5 @@
 {
-	"name": "SnowflakeTable_LAD_customerSTG",
+	"name": "SnowflakeTable_LAD_Customer_STG",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_LS",
