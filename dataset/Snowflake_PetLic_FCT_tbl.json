@@ -12,5 +12,6 @@
 			"schema": "SEATTLE_PET_LIC",
 			"table": "PET_LIC_FCT"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

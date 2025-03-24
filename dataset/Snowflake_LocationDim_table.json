@@ -43,5 +43,6 @@
 			"schema": "SEATTLE_PET_LIC",
 			"table": "LOCATION_DIM"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
