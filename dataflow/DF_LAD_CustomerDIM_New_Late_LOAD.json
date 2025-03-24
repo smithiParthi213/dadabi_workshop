@@ -30,9 +30,6 @@
 			],
 			"transformations": [
 				{
-					"name": "FilterInferredCols"
-				},
-				{
 					"name": "derivedColumns"
 				},
 				{
@@ -65,8 +62,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> sourceCustomerDIM",
-				"sourceCustomerSTG filter(INFERRED_STATUS == 0) ~> FilterInferredCols",
-				"FilterInferredCols derive(CUSTOMER_NAME = sourceCustomerSTG@CUSTOMER_NAME,",
+				"sourceCustomerSTG derive(CUSTOMER_NAME = sourceCustomerSTG@CUSTOMER_NAME,",
 				"          BILL_TO = sourceCustomerSTG@BILL_TO,",
 				"          INFERRED_STATUS = 0,",
 				"          di_job_id = $job_id,",
