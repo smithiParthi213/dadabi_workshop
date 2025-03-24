@@ -3,11 +3,64 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Invoice_FACT",
+						"type": "DatasetReference"
+					},
+					"name": "sourceInvoiceFACT"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_LAD_Customer_DIM",
+						"type": "DatasetReference"
+					},
+					"name": "sourceCustomerDIM"
+				}
+			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "join1"
+				}
+			],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          INVOICE_SK as decimal(38,0),",
+				"          INVOICE_ID as decimal(38,0),",
+				"          CUSTOMER_ID as decimal(38,0),",
+				"          INVOICE_DATE as date,",
+				"          SHIP_TO as string,",
+				"          SHIP_TO_CITY as string,",
+				"          SHIP_TO_COUNTRY as string,",
+				"          SALES_PERSON_ID as decimal(38,0),",
+				"          SALES_PERSON_NAME as string,",
+				"          TOTAL_PRODUCT_CNT as decimal(38,0),",
+				"          TOTAL_COST as double,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> sourceInvoiceFACT",
+				"source(output(",
+				"          CUSTOMER_SK as decimal(38,0),",
+				"          CUSTOMER_ID as decimal(38,0),",
+				"          CUSTOMER_NAME as string,",
+				"          BILL_TO as string,",
+				"          INFERRED_STATUS as decimal(38,0),",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> sourceCustomerDIM",
+				"sourceInvoiceFACT, sourceCustomerDIM join(sourceInvoiceFACT@CUSTOMER_ID == sourceCustomerDIM@CUSTOMER_ID,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1"
 			]
 		}
 	}

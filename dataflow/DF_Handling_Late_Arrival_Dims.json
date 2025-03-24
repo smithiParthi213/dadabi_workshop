@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_LAD_Invoice",
+						"referenceName": "SnowflakeTable_LAD_Invoice_FACT",
 						"type": "DatasetReference"
 					},
 					"name": "SourceInvoiceFCT"
@@ -84,15 +84,14 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> join",
-				"join filter(isNull(SourceCustomerDim@CUSTOMER_ID)",
-				") ~> filter",
+				"join filter(isNull(SourceCustomerDim@CUSTOMER_ID)) ~> filter",
 				"filter derive(CUSTOMER_ID = SourceInvoiceFCT@CUSTOMER_ID,",
 				"          CUSTOMER_NAME = \"N/A\",",
 				"          BILL_TO = \"N/A\",",
 				"          INFERRED_STATUS = 1,",
 				"          di_job_id = $job_id,",
 				"          di_load_dt = currentDate()) ~> derivedColumns",
-				"derivedColumns alterRow(upsertIf(INFERRED_STATUS == 1)) ~> AlterRow1",
+				"derivedColumns alterRow(upsertIf(INFERRED_STATUS==1)) ~> AlterRow1",
 				"AlterRow1 select(mapColumn(",
 				"          CUSTOMER_SK,",
 				"          CUSTOMER_ID,",

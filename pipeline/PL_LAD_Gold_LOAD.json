@@ -1,0 +1,35 @@
+{
+	"name": "PL_LAD_Gold_LOAD",
+	"properties": {
+		"activities": [
+			{
+				"name": "Invoice_FACT_LOAD",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_LAD_Invoice_FACT_LOAD",
+						"type": "DataFlowReference",
+						"parameters": {
+							"job_id": "\"SP_001_FACT_LOAD\""
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
