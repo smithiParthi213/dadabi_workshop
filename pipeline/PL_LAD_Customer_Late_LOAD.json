@@ -52,10 +52,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DF_LAD_CustomerDIM_Inferred_Late_LOAD",
+						"referenceName": "dataflow1",
 						"type": "DataFlowReference",
 						"parameters": {
-							"job_id": "\"SP_001_LateDIM_LOAD\""
+							"job_id": "\"Late_load\""
 						}
 					},
 					"compute": {
