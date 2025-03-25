@@ -25,7 +25,7 @@
 						"referenceName": "SnowflakeTable_LAD_Customer_DIM",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sinkSNF"
 				}
 			],
 			"transformations": [
@@ -109,7 +109,7 @@
 				"          INFERRED_STATUS,",
 				"          DI_JOB_ID = di_job_id,",
 				"          DI_LOAD_DT = di_load_dt",
-				"     )) ~> sink1"
+				"     )) ~> sinkSNF"
 			]
 		}
 	}
