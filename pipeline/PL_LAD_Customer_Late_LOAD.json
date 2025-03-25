@@ -52,7 +52,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "DF_LAD_Customer_Late_LOAD",
 						"type": "DataFlowReference",
 						"parameters": {
 							"job_id": "\"Late_load\""
